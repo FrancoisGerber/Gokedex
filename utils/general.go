@@ -1,6 +1,9 @@
 package utils
 
 import (
+	"encoding/json"
+	"os"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -30,4 +33,23 @@ func JsonError(err error, status int) gin.H {
 		"Error": err.Error(),
 		"Code":  status,
 	}
+}
+
+// Get specific value from settings file
+func GetSetting(key string) (string, error) {
+	data, err := os.ReadFile("settings.json")
+
+	if err != nil {
+		return "", err
+	}
+
+	var settings map[string]string
+
+	err = json.Unmarshal(data, &settings)
+
+	if err != nil {
+		return "", err
+	}
+
+	return settings[key], nil
 }

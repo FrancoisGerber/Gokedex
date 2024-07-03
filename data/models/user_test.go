@@ -20,6 +20,11 @@ func TestUser(t *testing.T) {
 	One(t, u)
 	Create(t, u)
 
+	u.Username = "changed"
+
+	Update(t, u)
+	Delete(t, u)
+
 	data.CloseDB()
 	CleanDB(t)
 }
@@ -54,6 +59,29 @@ func Create(t *testing.T, user User) {
 
 	if err != nil || user.Id != 2 {
 		t.Log(err.Error())
+		t.Fail()
+	}
+}
+
+func Update(t *testing.T, user User) {
+	changedRows, err := user.Update(user.Id)
+
+	if err != nil || changedRows == 0 {
+		t.Log(err.Error())
+		t.Fail()
+	}
+}
+
+func Delete(t *testing.T, user User) {
+	deleted, err := user.Delete(user.Id)
+
+	if err != nil {
+		t.Log(err.Error())
+		t.Fail()
+	}
+
+	if deleted != true {
+		t.Logf("User %v could not be deleted.", user.Id)
 		t.Fail()
 	}
 }

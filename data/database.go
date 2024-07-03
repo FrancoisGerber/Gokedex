@@ -10,9 +10,15 @@ import (
 
 var DB *sql.DB
 
-const dbFileName string = "api.db"
+var dbFileName string
 
 func InitDB() {
+	dbFileName, err := utils.GetSetting("DatabaseName")
+
+	if err != nil {
+		panic("Could not get DatabaseName. Did you set it in settings.json?")
+	}
+
 	db, err := sql.Open("sqlite3", dbFileName)
 	if err != nil {
 		panic("Could not connect to the database.")
