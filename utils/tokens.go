@@ -8,7 +8,7 @@ import (
 )
 
 // Used to sign the JWT
-var signingKey = []byte("Gokedex")
+var signingKey []byte
 
 // Generate a JWT from the user id and username, signed with a 30 day exp date
 func GenerateJWT(id int64, username string) (string, error) {
@@ -18,6 +18,14 @@ func GenerateJWT(id int64, username string) (string, error) {
 		"exp":      time.Now().UTC().AddDate(0, 1, 0).Unix(),
 		"nbf":      time.Date(2024, 06, 01, 12, 0, 0, 0, time.UTC).Unix(),
 	})
+
+	salt, err := GetSetting("TokenSalt")
+
+	if err != nil {
+		return "", err
+	}
+
+	signingKey = []byte(salt)
 
 	tokenString, err := token.SignedString(signingKey)
 
@@ -30,6 +38,14 @@ func GenerateJWT(id int64, username string) (string, error) {
 
 // Validates a JWT token and returns valid, user ID and error
 func ValidateJWT(tokenString string) (bool, int64, error) {
+	salt, err := GetSetting("TokenSalt")
+
+	if err != nil {
+		return false, 0, err
+	}
+
+	signingKey = []byte(salt)
+
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])

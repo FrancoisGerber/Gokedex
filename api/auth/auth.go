@@ -31,7 +31,6 @@ func Login(context *gin.Context) {
 	context.JSON(http.StatusOK, gin.H{
 		"Valid": valid,
 		"Token": token,
-		// "Error": err.Error(),
 	})
 }
 
