@@ -1,5 +1,5 @@
 dev:
-	go run .
+	air .
 
 build:
 	go build
@@ -7,4 +7,9 @@ build:
 test:
 	go test -v ./...
 
-deploy: test build
+swagger:
+	swag init -g ./app.go -o ./api/docs
+
+deploy: swagger build test
+
+run: swagger build dev
