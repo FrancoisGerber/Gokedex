@@ -2,7 +2,8 @@ package api
 
 import (
 	"Gokedex/api/auth"
-	"Gokedex/api/controllers"
+	"Gokedex/api/controllers/pokemon"
+	"Gokedex/api/controllers/users"
 	"Gokedex/api/middleware"
 
 	"github.com/gin-gonic/gin"
@@ -20,4 +21,5 @@ func Routes(router *gin.Engine) {
 	auth.SetupEndpoints(authGroup)
 
 	users.SetupEndpoints(apiGroup)
+	pokemon.SetupEndpoints(apiGroup)
 }

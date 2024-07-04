@@ -10,6 +10,9 @@
 *.db
 
 settings.json
+tmp/
+Gokedex
+api/docs
 
 # Test binary, built with `go test -c`
 *.test

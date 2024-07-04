@@ -51,6 +51,24 @@ func setuptables() {
 	if err != nil {
 		fmt.Println("Could not create Users table!")
 	}
+
+	pokemonTable := `
+  CREATE TABLE IF NOT EXISTS "Pokemon" (
+	  "Id"	INTEGER NOT NULL UNIQUE,
+	  "Name"	TEXT,
+	  "Category"	TEXT,
+	  "Height"	INTEGER,
+	  "Weight"	INTEGER,
+	  "Type"	TEXT,
+	  "Weakness"	TEXT,
+	  "Abilities"	TEXT,
+	  PRIMARY KEY("Id" AUTOINCREMENT)
+  );`
+
+	_, err = DB.Exec(pokemonTable)
+	if err != nil {
+		fmt.Println("Could not create Pokemon table!")
+	}
 }
 
 func seedData() {
